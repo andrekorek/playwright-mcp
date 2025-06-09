@@ -100,6 +100,16 @@ export function startHttpTransport(server: Server) {
   const sseSessions = new Map<string, SSEServerTransport>();
   const streamableSessions = new Map<string, StreamableHTTPServerTransport>();
   const httpServer = http.createServer(async (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+res.setHeader('Access-Control-Allow-Headers', '*');
+
+if (req.method === 'OPTIONS') {
+  res.statusCode = 204;
+  res.end();
+  return;
+}
+
     const url = new URL(`http://localhost${req.url}`);
     if (url.pathname.startsWith('/mcp'))
       await handleStreamable(server, req, res, streamableSessions);
