@@ -22,6 +22,8 @@ import { startHttpTransport, startStdioTransport } from './transport.js';
 import { resolveCLIConfig } from './config.js';
 import { Server } from './server.js';
 import { packageJSON } from './package.js';
+import { Tool } from './tools/tool.js';
+import { snapshotTools, visionTools } from './tools.js';
 
 program
     .version('Version ' + packageJSON.version)
@@ -56,6 +58,9 @@ program
       const config = await resolveCLIConfig(options);
       const server = new Server(config);
       server.setupExitWatchdog();
+      const allTools = config.vision ? visionTools : snapshotTools;
+      const tools = allTools.filter(tool => !config.capabilities || tool.capability === 'core' || config.capabilities.includes(tool.capability));
+      tools.map((t: Tool) => {  console.log(t.schema.name);});
 
       if (config.server.port !== undefined)
         startHttpTransport(server);
