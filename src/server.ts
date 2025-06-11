@@ -38,6 +38,7 @@ export class Server {
     const connection = createConnection(this.config, this._contextFactory);
     this._connectionList.push(connection);
     await connection.server.connect(transport);
+    console.log('Tools disponíveis:', tools.map(t => t.schema.name));
     return connection;
   }
 

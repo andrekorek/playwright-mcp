@@ -26,6 +26,7 @@ import type { BrowserContextFactory } from './browserContextFactory.js';
 export async function createConnection(userConfig: Config = {}, contextGetter?: () => Promise<BrowserContext>): Promise<Connection> {
   const config = await resolveConfig(userConfig);
   const factory = contextGetter ? new SimpleBrowserContextFactory(contextGetter) : contextFactory(config.browser);
+  console.log('Tools disponíveis:', tools.map(t => t.schema.name));
   return createConnectionImpl(config, factory);
 }
 
