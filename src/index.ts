@@ -18,15 +18,22 @@ import { createConnection as createConnectionImpl } from './connection.js';
 import type { Connection } from '../index.js';
 import { resolveConfig } from './config.js';
 import { contextFactory } from './browserContextFactory.js';
+import { FullConfig } from './config.js';
 
 import type { Config } from '../config.js';
 import type { BrowserContext } from 'playwright';
 import type { BrowserContextFactory } from './browserContextFactory.js';
+import { Tool } from './tools/tool.js';
+import { snapshotTools, visionTools } from './tools.js';
 
 export async function createConnection(userConfig: Config = {}, contextGetter?: () => Promise<BrowserContext>): Promise<Connection> {
   const config = await resolveConfig(userConfig);
   const factory = contextGetter ? new SimpleBrowserContextFactory(contextGetter) : contextFactory(config.browser);
-  console.log('Tools disponíveis:', tools.map(t => t.schema.name));
+  const allTools = config.vision ? visionTools : snapshotTools;
+  const tools = allTools.filter(tool => !config.capabilities || tool.capability === 'core' || config.capabilities.includes(tool.capability));
+tools.map((t: Tool) => {
+  console.log(t.schema.name);
+});
   return createConnectionImpl(config, factory);
 }
 

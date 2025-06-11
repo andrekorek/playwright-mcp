@@ -17,6 +17,7 @@
 import { createConnection } from './connection.js';
 import { contextFactory } from './browserContextFactory.js';
 
+
 import type { FullConfig } from './config.js';
 import type { Connection } from './connection.js';
 import type { Transport } from '@modelcontextprotocol/sdk/shared/transport.js';
@@ -38,7 +39,6 @@ export class Server {
     const connection = createConnection(this.config, this._contextFactory);
     this._connectionList.push(connection);
     await connection.server.connect(transport);
-    console.log('Tools disponíveis:', tools.map(t => t.schema.name));
     return connection;
   }
 
