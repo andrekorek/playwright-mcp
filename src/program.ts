@@ -60,7 +60,7 @@ program
       server.setupExitWatchdog();
       const allTools = config.vision ? visionTools : snapshotTools;
       const tools = allTools.filter(tool => !config.capabilities || tool.capability === 'core' || config.capabilities.includes(tool.capability));
-      tools.map((t: Tool) => {  console.log(t.schema.name);});
+      tools.map((t: Tool) => {  console.log(t.schema+"."+t.schema.name);});
 
       if (config.server.port !== undefined)
         startHttpTransport(server);
